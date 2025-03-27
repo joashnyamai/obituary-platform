@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block meta_tags %}{% endblock %}
+    <title>{% block title %}Obituary Platform{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="{% url 'obituary_list' %}" class="btn">Home</a>
+            <a href="{% url 'obituary_create' %}" class="btn">Submit Obituary</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="container">
+        <p>&copy; {% now "Y" %} Obituary Platform. All rights reserved.</p>
+    </footer>
+
+    <script src="{% static 'js/form-validation.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

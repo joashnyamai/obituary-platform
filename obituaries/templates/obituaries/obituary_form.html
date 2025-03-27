@@ -1,0 +1,40 @@
+{% extends "obituaries/base.html" %}
+{% load static %}
+
+{% block title %}Submit Obituary - Obituary Platform{% endblock %}
+
+{% block content %}
+<div class="obituary-form">
+    <h1>Submit an Obituary</h1>
+    <form method="post" id="obituary-form">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="id_name">Full Name:</label>
+            <input type="text" name="name" id="id_name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="id_date_of_birth">Date of Birth:</label>
+            <input type="date" name="date_of_birth" id="id_date_of_birth" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="id_date_of_death">Date of Death:</label>
+            <input type="date" name="date_of_death" id="id_date_of_death" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="id_content">Obituary Content:</label>
+            <textarea name="content" id="id_content" class="form-control" rows="10" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="id_author">Author Name:</label>
+            <input type="text" name="author" id="id_author" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn">Submit Obituary</button>
+    </form>
+</div>
+{% endblock %}

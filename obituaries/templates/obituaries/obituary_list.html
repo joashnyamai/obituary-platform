@@ -1,0 +1,60 @@
+{% extends "obituaries/base.html" %}
+{% load static %}
+
+{% block meta_tags %}
+    <meta name="description" content="Browse and search obituaries on our platform. Find memories of loved ones and share condolences.">
+    <meta name="keywords" content="obituaries, memorials, remembrance, tributes">
+{% endblock %}
+
+{% block title %}Browse Obituaries - Obituary Platform{% endblock %}
+
+{% block content %}
+<div class="obituary-list">
+    <h1>Recent Obituaries</h1>
+    
+    <div class="search-form">
+        <form method="get" action="{% url 'obituary_list' %}">
+            <div class="form-group">
+                <input type="search" name="q" class="form-control" placeholder="Search obituaries..." 
+                       value="{{ request.GET.q|default:'' }}">
+                <button type="submit" class="btn">Search</button>
+            </div>
+        </form>
+    </div>
+
+    {% if obituaries %}
+        {% for obituary in obituaries %}
+            <div class="obituary-card">
+                <h2><a href="{{ obituary.get_absolute_url }}">{{ obituary.name }}</a></h2>
+                <p class="dates">{{ obituary.date_of_birth|date:"F j, Y" }} - {{ obituary.date_of_death|date:"F j, Y" }}</p>
+                <p class="excerpt">{{ obituary.content|truncatewords:50 }}</p>
+                <div class="meta">
+                    <span>Written by: {{ obituary.author }}</span>
+                    <span>Published: {{ obituary.submission_date|date:"F j, Y" }}</span>
+                </div>
+                <a href="{{ obituary.get_absolute_url }}" class="btn">Read More</a>
+            </div>
+        {% endfor %}
+
+        {% if is_paginated %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+                       class="btn">Previous</a>
+                {% endif %}
+                
+                <span class="current-page">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+                       class="btn">Next</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% else %}
+        <p>No obituaries found.</p>
+    {% endif %}
+</div>
+{% endblock %}
